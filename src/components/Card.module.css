@@ -61,7 +61,6 @@
     height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
-
 }
 
 .tvBadge {
@@ -71,4 +70,30 @@
     border-radius: 5px;
     font-size: 0.8rem;
     margin-top: 8px;
+}
+
+.flag {
+    margin-top: 10px;
+    max-width: 50px;
+    max-height: 30px;
+    display: inline-block;
+    align-self: center;
+}
+
+.cardStar {
+    display: flex;
+    gap: 4px;
+    color: #f39c12;
+    margin-top: 8px;
+    align-self: center;
+}
+
+.cardStar svg {
+    font-size: 1.5em;
+}
+
+.cardDescription p {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #ccc;
 }
