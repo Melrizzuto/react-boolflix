@@ -7,7 +7,6 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
-    margin-top: 100px;
 }
 
 .card:hover {
@@ -51,13 +50,13 @@
 .card h3 {
     font-size: 1rem;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .card p {
     font-size: 0.8rem;
     line-height: 1.4;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -69,7 +68,7 @@
     padding: 5px;
     border-radius: 5px;
     font-size: 0.8rem;
-    margin-top: 8px;
+    margin-top: 5px;
 }
 
 .flag {

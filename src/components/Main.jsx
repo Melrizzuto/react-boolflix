@@ -51,9 +51,11 @@ function Main() {
 
     return (
         <main className={styles.mainContainer}>
+            <h2>Film</h2>
             {/* mostro la lista dei film */}
             <MovieList movies={filteredMovies} />
             {/* mostro la lista delle serie */}
+            <h2>Serie tv</h2>
             <SeriesList series={filteredSeries} />
         </main>
     );

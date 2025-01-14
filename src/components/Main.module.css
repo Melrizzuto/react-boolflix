@@ -34,8 +34,7 @@
 }
 
 .carousel-item {
-    padding: 20px 0;
-    /* Spaziatura tra le voci */
+    padding: 40px 0;
 }
 
 /* Immagini dei film */
@@ -49,5 +48,4 @@
 
 .carousel-item img:hover {
     transform: scale(1.05);
-    /* Zoom quando il mouse passa sopra */
 }
