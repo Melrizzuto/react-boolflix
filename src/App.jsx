@@ -1,11 +1,22 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { GlobalProvider } from './context/GlobalProvider';
+import { GlobalProvider } from './context/GlobalContext';
+import Main from "./components/Main";
+import Header from "./components/Header";
+import SearchBar from './components/SearchBar';
+import MovieList from './components/MovieList';
+import SeriesList from './components/SeriesList';
 
 function App() {
+
+
   return (
     <GlobalProvider>
       <div className="App">
-        {/* nel wrapping inserirò i componenti dell'app */}
+        <Header />
+        <Main>
+          <SearchBar />
+          <MovieList />
+          <SeriesList />
+        </Main>
       </div>
     </GlobalProvider>
   );

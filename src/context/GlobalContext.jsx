@@ -3,7 +3,7 @@ import { createContext, useState } from 'react';
 // setto il contesto
 const GlobalContext = createContext();
 
-const GlobalProvider = ({ children }) => {
+function GlobalProvider({ children }) {
     const [movies, setMovies] = useState([]); // Lista dei film
     const [series, setSeries] = useState([]); // Lista delle serie TV
 
