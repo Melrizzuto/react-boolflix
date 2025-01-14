@@ -73,10 +73,12 @@
 
 .flag {
     margin-top: 10px;
-    max-width: 50px;
-    max-height: 30px;
+    max-width: 30px;
+    max-height: 15px;
     display: inline-block;
     align-self: center;
+    border-radius: 50%;
+    margin-bottom: 20px;
 }
 
 .cardStar {

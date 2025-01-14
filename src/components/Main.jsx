@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useGlobalContext } from "../context/GlobalContext"
+import { useGlobalContext } from "../context/GlobalContext";
 import MovieList from './MovieList';
 import SeriesList from './SeriesList';
 import styles from './Main.module.css';
-
 
 function Main() {
     const {
@@ -57,11 +56,10 @@ function Main() {
                 <MovieList movies={filteredMovies} />
             </section>
             <section className='container-sm'>
-                {/* mostro la lista delle serie */}
                 <h2 className='p-4'>Serie tv</h2>
+                {/* mostro la lista delle serie */}
                 <SeriesList series={filteredSeries} />
             </section>
-
         </main>
     );
 }
