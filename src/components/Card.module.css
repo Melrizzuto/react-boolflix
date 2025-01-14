@@ -7,6 +7,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
+    margin-top: 100px;
 }
 
 .card:hover {
@@ -16,9 +17,12 @@
 .cardImage {
     width: 100%;
     height: 350px;
-
     object-fit: cover;
-    transition: opacity 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .cardImage {
+    transform: scale(1.1);
 }
 
 .cardDescription {
@@ -27,15 +31,37 @@
     left: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.6);
-    /* Fondo semi-trasparente */
     color: white;
-    padding: 10px;
+    padding: 15px;
+    font-size: 12px;
+    text-align: center;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    overflow: hidden;
 }
 
 .card:hover .cardDescription {
     opacity: 1;
+}
+
+.card h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
 }
 
 .tvBadge {
@@ -44,18 +70,5 @@
     padding: 5px;
     border-radius: 5px;
     font-size: 0.8rem;
-    margin-top: 10px;
-}
-
-.card h3 {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.card p {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    height: 60px;
-    overflow: hidden;
+    margin-top: 8px;
 }
