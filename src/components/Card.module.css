@@ -1,0 +1,61 @@
+.card {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.cardImage {
+    width: 100%;
+    height: 350px;
+
+    object-fit: cover;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.cardDescription {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Fondo semi-trasparente */
+    color: white;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.card:hover .cardDescription {
+    opacity: 1;
+}
+
+.tvBadge {
+    background-color: #f00;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    margin-top: 10px;
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    height: 60px;
+    overflow: hidden;
+}

@@ -1,0 +1,53 @@
+/* Main container */
+.mainContainer {
+    background-color: #111;
+    color: white;
+    padding: 20px;
+}
+
+/* Titolo principale */
+.pageTitle {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.category {
+    margin-bottom: 30px;
+}
+
+.categoryTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    color: #fff;
+    display: inline-block;
+    text-align: left;
+}
+
+/* Personalizzazione per il carosello dei film */
+.carousel-inner {
+    overflow: hidden;
+}
+
+.carousel-item {
+    padding: 20px 0;
+    /* Spaziatura tra le voci */
+}
+
+/* Immagini dei film */
+.carousel-item img {
+    width: 300px;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.carousel-item img:hover {
+    transform: scale(1.05);
+    /* Zoom quando il mouse passa sopra */
+}

@@ -1,49 +1,55 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
+import { useGlobalContext } from '../context/GlobalContext';
+import Card from './Card';
+import styles from './SeriesList.module.css';
 
 function SeriesList() {
-    const [series, setSeries] = useState([]);
+    // sto usando il contesto globale per accedere agli state 
+    const { series, setSeries, loading, setLoading } = useGlobalContext();
 
-    const apiKey = import.meta.env.VITE_API_KEY;
-    const imagePath = import.meta.env.VITE_API_PATH;
-
-    // chiamata API per ottenere le serie TV
     useEffect(() => {
-        const url = `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=it_IT`;
-
-        axios
-            .get(url)
-            .then((response) => {
-                setSeries(response.data.results);
+        // qui definisco la funzione per recuperare le serie tv
+        const fetchSeries = () => {
+            const apiKey = import.meta.env.VITE_API_KEY; // prendo la chiave API dal fine .env
+            setLoading(true); // metto il carimaneto su true prima di fare la richiesta
+            axios.get('https://api.themoviedb.org/3/tv/popular', { // faccio la richiesta in get per ottenere le serie TV popolari
+                params: {
+                    api_key: apiKey,
+                    language: 'it-IT', // imposto la lingua italiana
+                },
             })
-            .catch((error) => console.error('Errore nella ricerca:', error));
-    }, [apiKey]);
+                .then((response) => {
+                    // quando la richiesta va a buon fine, aggiorno lo stato series con i risultati
+                    setSeries(response.data.results);
+                })
+                .catch((error) => {
+                    // se c'è un errore, loggo l'errore nella console
+                    console.error('Errore durante il recupero delle serie:', error);
+                })
+                .finally(() => {
+                    // alla fine, metto il caricamento su false
+                    setLoading(false);
+                });
+        };
+
+        fetchSeries(); // chiamo la funzione per recuperare le serie
+
+    }, [setSeries, setLoading]); // setto le dipendenze
 
     return (
-        <div className="row">
-            {series.length > 0 ? (
-                series.map((tv) => (
-                    <div key={tv.id} className="col-md-3 mb-4">
-                        <div className="card">
-                            {tv.poster_path && (
-                                <img
-                                    src={`${imagePath}${tv.poster_path}`}
-                                    alt={tv.name}
-                                    className="card-img-top"
-                                />
-                            )}
-                            <div className="card-body">
-                                <h5 className="card-title">{tv.name}</h5>
-                                <p className="card-text">Voto: {tv.vote_average}</p>
-                            </div>
-                        </div>
+        <div className={styles.seriesListContainer}>
+            {loading ? ( // se loading è true, mostro il messaggio di caricamento
+                <p className="text-center">Caricamento serie TV...</p>
+            ) : ( // altrimenti, mappo le serie e le mostro come Card
+                series.map((serie) => (
+                    <div className={styles.seriesCardWrapper} key={serie.id}>
+                        <Card item={serie} />
                     </div>
                 ))
-            ) : (
-                <p>Nessuna serie TV trovata</p>
             )}
         </div>
     );
-};
+}
 
 export default SeriesList;

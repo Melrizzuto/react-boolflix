@@ -1,15 +1,15 @@
 import SearchBar from './SearchBar';
-import './Header.css';
+import styles from "./Header.module.css"
 
 function Header() {
     return (
-        <header className="navbar navbar-dark bg-dark px-3 fixed-top">
-            <div className="container-fluid">
-                <a className="navbar-brand" href="#">
+        <header className={`${styles.navbar} ${styles.bgDark} ${styles.fixedTop}`}>
+            <div className={styles.containerFluid}>
+                <a className={styles.navbarBrand} href="#">
                     <img
                         src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png"
                         alt="Netflix Logo"
-                        height="25"
+                        height="30"
                     />
                 </a>
                 <SearchBar />

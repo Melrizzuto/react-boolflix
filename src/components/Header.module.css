@@ -1,0 +1,30 @@
+.navbar {
+    padding: 1rem;
+}
+
+.bgDark {
+    background-color: #000 !important;
+}
+
+.fixedTop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.containerFluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbarBrand {
+    display: flex;
+    align-items: center;
+}
+
+.navbarBrand img {
+    max-height: 30px;
+}

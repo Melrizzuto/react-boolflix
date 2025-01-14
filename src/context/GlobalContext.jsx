@@ -1,17 +1,39 @@
-import { createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
-// setto il contesto
 const GlobalContext = createContext();
 
 function GlobalProvider({ children }) {
-    const [movies, setMovies] = useState([]); // Lista dei film
-    const [series, setSeries] = useState([]); // Lista delle serie TV
+    const [movies, setMovies] = useState([]);
+    const [series, setSeries] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
+    const [selectedGenre, setSelectedGenre] = useState('all');
+    const [error, setError] = useState(null);
 
     return (
-        <GlobalContext.Provider value={{ movies, setMovies, series, setSeries }}>
+        <GlobalContext.Provider
+            value={{
+                movies,
+                setMovies,
+                series,
+                setSeries,
+                loading,
+                setLoading,
+                isSearching,
+                setIsSearching,
+                selectedGenre,
+                setSelectedGenre,
+                error,
+                setError,
+            }}
+        >
             {children}
         </GlobalContext.Provider>
     );
-};
+}
 
-export { GlobalProvider, GlobalContext }
+function useGlobalContext() {
+    return useContext(GlobalContext);
+}
+
+export { GlobalProvider, useGlobalContext };

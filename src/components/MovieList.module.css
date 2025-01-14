@@ -1,0 +1,52 @@
+.movieListContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.movieCardWrapper {
+    max-width: 250px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.movieCardWrapper:hover {
+    transform: scale(1.05);
+}
+
+.movieCardImage {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.movieCardDescription {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.movieCardWrapper:hover .movieCardDescription {
+    opacity: 1;
+}
+
+.movieCardDescription h3 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.movieCardDescription p {
+    font-size: 0.9em;
+    margin: 10px 0 0;
+}
