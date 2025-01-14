@@ -6,10 +6,12 @@ import styles from './SearchBar.module.css';
 function SearchBar() {
     const [searchValue, setSearchValue] = useState('');
     const [searchType, setSearchType] = useState('movie');
+    const [searched, setSearched] = useState(false); // stato per tracciare se la ricerca è stata eseguita
     const { setMovies, setSeries, setLoading, setError, loading, error } = useGlobalContext();
 
     // funzione per gestire la ricerca
-    function handleSearch(query) {
+    function handleSearch() {
+        const query = searchValue;
         const apiKey = import.meta.env.VITE_API_KEY;
         const endpoint = searchType === 'movie' ? 'movie' : 'tv';
 
@@ -32,6 +34,7 @@ function SearchBar() {
                     } else {
                         setSeries(response.data.results);
                     }
+                    setSearched(true); // Impostiamo "searched" a true dopo aver cercato
                 } else {
                     setError('Nessun risultato trovato');
                 }
@@ -45,10 +48,8 @@ function SearchBar() {
 
     // effettuo la ricerca solo se c'è qualcosa nella search bar
     useEffect(() => {
-        if (searchValue) {
-            handleSearch(searchValue);
-        } else {
-            // se non ci sono valori nella search bar, carica i contenuti predefiniti
+        if (!searchValue && !searched) {
+            // carico i contenuti predefiniti solo quando la barra di ricerca è vuota e non è stata eseguita una ricerca
             const apiKey = import.meta.env.VITE_API_KEY;
             setLoading(true);
             axios
@@ -71,7 +72,13 @@ function SearchBar() {
                     setError(error, 'Errore durante il recupero dei contenuti');
                 });
         }
-    }, [searchValue, searchType, setMovies, setSeries, setLoading, setError]);
+    }, [searchValue, searchType, setMovies, setSeries, setLoading, setError, searched]);
+
+    // gestisco il cambio nella barra di ricerca
+    function handleChange(e) {
+        setSearchValue(e.target.value);
+        setSearched(false); // resetto searched quando si modifica la ricerca
+    };
 
     return (
         <div className={styles.searchBarContainer}>
@@ -80,9 +87,15 @@ function SearchBar() {
                     type="text"
                     placeholder="Cerca un film o una serie..."
                     value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)} // aggiorno searchValue mentre digito
+                    onChange={handleChange} // aggiorno searchValue mentre digito
                     className={styles.searchInput}
                 />
+                <button
+                    onClick={handleSearch} // attivo la ricerca quando clicchi sul bottone
+                    className={styles.searchButton}
+                >
+                    Cerca
+                </button>
             </div>
 
             {/* Seleziona tra Film o Serie TV */}
