@@ -49,10 +49,6 @@ function Card({ item }) {
                     <strong>Titolo Originale:</strong> {item.original_title || item.original_name}
                 </p>
 
-                {/* Lingua */}
-                <p>
-                    <strong>Lingua:</strong> {item.original_language}
-                </p>
 
                 {/* Bandiera */}
                 <div className={styles.flag}>

@@ -5,36 +5,48 @@ import styles from './SearchBar.module.css';
 
 function SearchBar() {
     const [searchValue, setSearchValue] = useState('');
-    const [searchType, setSearchType] = useState('movie');
     const [searched, setSearched] = useState(false);
-    const { setMovies, setSeries, setLoading, setError, loading, error } = useGlobalContext();
+    const { setMovies, setSeries, setLoading, setError } = useGlobalContext();
 
-    // funzione per gestire la ricerca
-    function handleSearch(query) {
+    // Funzione per gestire la ricerca
+    function handleSearch() {
+        const query = searchValue;
         const apiKey = import.meta.env.VITE_API_KEY;
-        const endpoint = searchType === 'movie' ? 'movie' : 'tv';
 
         setLoading(true);
         setError(null);
 
-        axios
-            .get(`https://api.themoviedb.org/3/search/${endpoint}`, {
-                params: {
-                    api_key: apiKey,
-                    query: query,
-                    language: 'it-IT',
-                },
-            })
-            .then((response) => {
+        // Eseguiamo due ricerche, una per i film e una per le serie
+        const movieSearch = axios.get(`https://api.themoviedb.org/3/search/movie`, {
+            params: {
+                api_key: apiKey,
+                query: query,
+                language: 'it-IT',
+            },
+        });
+
+        const seriesSearch = axios.get(`https://api.themoviedb.org/3/search/tv`, {
+            params: {
+                api_key: apiKey,
+                query: query,
+                language: 'it-IT',
+            },
+        });
+
+        // Eseguiamo entrambe le richieste contemporaneamente
+        Promise.all([movieSearch, seriesSearch])
+            .then((responses) => {
                 setLoading(false);
-                if (response.data.results) {
-                    if (searchType === 'movie') {
-                        setMovies(response.data.results);
-                    } else {
-                        setSeries(response.data.results);
-                    }
-                    setSearched(true); // Impostiamo "searched" a true dopo aver cercato
-                } else {
+                const movieResults = responses[0].data.results;
+                const seriesResults = responses[1].data.results;
+
+                // Impostiamo i film e le serie
+                setMovies(movieResults);
+                setSeries(seriesResults);
+                setSearched(true); // Impostiamo "searched" a true dopo aver cercato
+
+                // Se non ci sono risultati, impostiamo un messaggio di errore
+                if (movieResults.length === 0 && seriesResults.length === 0) {
                     setError('Nessun risultato trovato');
                 }
             })
@@ -43,46 +55,56 @@ function SearchBar() {
                 setError('Errore durante la ricerca, riprova più tardi');
                 console.error('Errore nella richiesta API:', error);
             });
-    };
+    }
 
-    // effettuo la ricerca solo se c'è qualcosa nella search bar
+    // Effettua la ricerca solo se c'è qualcosa nella barra di ricerca
     useEffect(() => {
         if (!searchValue && !searched) {
-            // carico i contenuti predefiniti solo quando la barra di ricerca è vuota e non è stata eseguita una ricerca
+            // Carica i contenuti predefiniti solo quando la barra di ricerca è vuota e non è stata eseguita una ricerca
             const apiKey = import.meta.env.VITE_API_KEY;
             setLoading(true);
-            axios
-                .get(`https://api.themoviedb.org/3/${searchType}/popular`, {
-                    params: {
-                        api_key: apiKey,
-                        language: 'it-IT',
-                    },
-                })
-                .then((response) => {
+            // Chiamate per film e serie più popolari
+            const moviePopular = axios.get(`https://api.themoviedb.org/3/movie/popular`, {
+                params: {
+                    api_key: apiKey,
+                    language: 'it-IT',
+                },
+            });
+
+            const seriesPopular = axios.get(`https://api.themoviedb.org/3/tv/popular`, {
+                params: {
+                    api_key: apiKey,
+                    language: 'it-IT',
+                },
+            });
+
+            // Eseguiamo entrambe le richieste per i contenuti più popolari
+            Promise.all([moviePopular, seriesPopular])
+                .then((responses) => {
                     setLoading(false);
-                    if (searchType === 'movie') {
-                        setMovies(response.data.results);
-                    } else {
-                        setSeries(response.data.results);
-                    }
+                    const movieResults = responses[0].data.results;
+                    const seriesResults = responses[1].data.results;
+                    setMovies(movieResults); // Impostiamo i film più popolari
+                    setSeries(seriesResults);
                 })
                 .catch((error) => {
                     setLoading(false);
-                    setError(error, 'Errore durante il recupero dei contenuti');
+                    setError('Errore durante il recupero dei contenuti');
+                    console.error('Errore nella richiesta API:', error);
                 });
         }
-    }, [searchValue, searchType, setMovies, setSeries, setLoading, setError, searched]);
+    }, [searchValue, setMovies, setSeries, setLoading, setError, searched]);
 
-    // gestisco il cambio nella barra di ricerca
+    // Gestisco il cambio nella barra di ricerca
     function handleChange(e) {
         setSearchValue(e.target.value);
-        setSearched(false); // resetto searched quando si modifica la ricerca
-    };
+        setSearched(false); // Resetto searched quando si modifica la ricerca
+    }
 
-    // funzione che avvia la ricerca quando l'utente preme "Enter"
+    // Funzione che avvia la ricerca quando l'utente preme "Enter"
     function SearchOnEnter(e) {
         if (e.code === 'Enter' && searchValue.trim()) {
-            handleSearch(searchValue);
+            handleSearch();
         }
     }
 
@@ -93,33 +115,19 @@ function SearchBar() {
                     type="text"
                     placeholder="Cerca un film o una serie..."
                     value={searchValue}
-                    onChange={handleChange} // aggiorno searchValue mentre digito
-                    onKeyUp={SearchOnEnter} // attiva la ricerca premendo "Enter"
+                    onChange={handleChange} // Aggiorno searchValue mentre digito
+                    onKeyUp={SearchOnEnter} // Attiva la ricerca premendo "Enter"
                     className={styles.searchInput}
                 />
                 <button
-                    onClick={() => handleSearch(searchValue)} // attivo la ricerca quando clicchi sul bottone
+                    onClick={handleSearch}
                     className={styles.searchButton}
                 >
                     Cerca
                 </button>
             </div>
 
-            {/* Seleziona tra Film o Serie TV */}
-            <select
-                value={searchType}
-                onChange={(e) => setSearchType(e.target.value)} // aggiorna searchType
-                className={styles.searchType}
-            >
-                <option value="movie">Film</option>
-                <option value="tv">Serie TV</option>
-            </select>
 
-            {/* Mostra un indicatore di caricamento */}
-            {loading && <p className={styles.loading}>Caricamento...</p>}
-
-            {/* Mostra gli errori se ce ne sono */}
-            {error && <p className={styles.error}>{error}</p>}
         </div>
     );
 }

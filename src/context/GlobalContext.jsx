@@ -14,6 +14,7 @@ function GlobalProvider({ children }) {
     const fetchMoviesAndSeries = () => {
         const apiKey = import.meta.env.VITE_API_KEY; // Prendo la chiave API dal file .env
         setLoading(true); // Imposto lo stato di caricamento su true
+        setError(null); // Reset errore precedente
 
         const moviesPromise = axios.get('https://api.themoviedb.org/3/movie/popular', {
             params: { api_key: apiKey, language: 'it-IT' },
