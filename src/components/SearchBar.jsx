@@ -120,7 +120,7 @@ function SearchBar() {
                     className={styles.searchInput}
                 />
                 <button
-                    onClick={handleSearch}
+                    onClick={handleSearch} // Attivo la ricerca quando clicchi sul bottone
                     className={styles.searchButton}
                 >
                     Cerca
