@@ -16,7 +16,7 @@ function MediaList({ type, title }) {
     }
 
     return (
-        <div className={styles.cardWrapper}>
+        <div className={`d-flex flex-wrap ${styles.cardWrapper}`}>
             {data.map((item) => (
                 <div className={styles.cardItem} key={item.id}>
                     <Card item={item} />

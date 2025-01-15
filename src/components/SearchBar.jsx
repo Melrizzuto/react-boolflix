@@ -10,8 +10,7 @@ function SearchBar() {
     const { setMovies, setSeries, setLoading, setError, loading, error } = useGlobalContext();
 
     // funzione per gestire la ricerca
-    function handleSearch() {
-        const query = searchValue;
+    function handleSearch(query) {
         const apiKey = import.meta.env.VITE_API_KEY;
         const endpoint = searchType === 'movie' ? 'movie' : 'tv';
 
@@ -80,6 +79,13 @@ function SearchBar() {
         setSearched(false); // resetto searched quando si modifica la ricerca
     };
 
+    // funzione che avvia la ricerca quando l'utente preme "Enter"
+    function SearchOnEnter(e) {
+        if (e.code === 'Enter' && searchValue.trim()) {
+            handleSearch(searchValue);
+        }
+    }
+
     return (
         <div className={styles.searchBarContainer}>
             <div className={styles.searchBar}>
@@ -88,10 +94,11 @@ function SearchBar() {
                     placeholder="Cerca un film o una serie..."
                     value={searchValue}
                     onChange={handleChange} // aggiorno searchValue mentre digito
+                    onKeyUp={SearchOnEnter} // attiva la ricerca premendo "Enter"
                     className={styles.searchInput}
                 />
                 <button
-                    onClick={handleSearch} // attivo la ricerca quando clicchi sul bottone
+                    onClick={() => handleSearch(searchValue)} // attivo la ricerca quando clicchi sul bottone
                     className={styles.searchButton}
                 >
                     Cerca

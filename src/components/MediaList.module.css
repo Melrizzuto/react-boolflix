@@ -1,20 +1,28 @@
+/* Container delle card */
 .movieListContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    padding: 10px;
+    margin: 0 auto;
 }
 
+/* Wrapper per ogni card */
 .movieCardWrapper {
+    flex: 1 1 calc(25% - 15px);
     max-width: 250px;
+    position: relative;
     transition: transform 0.3s ease;
     cursor: pointer;
 }
 
+/* Hover per il wrapper della card */
 .movieCardWrapper:hover {
     transform: scale(1.05);
 }
 
+/* Immagine della card */
 .movieCardImage {
     width: 100%;
     height: auto;
@@ -22,6 +30,7 @@
     transition: opacity 0.3s ease;
 }
 
+/* Descrizione della card */
 .movieCardDescription {
     position: absolute;
     bottom: 10px;
@@ -35,16 +44,19 @@
     transition: opacity 0.3s ease;
 }
 
+/* Rende visibile la descrizione al passaggio del mouse sulla card */
 .movieCardWrapper:hover .movieCardDescription {
     opacity: 1;
 }
 
+/* Titolo della descrizione */
 .movieCardDescription h3 {
     margin: 0;
     font-size: 1.2em;
     font-weight: bold;
 }
 
+/* Paragrafo della descrizione */
 .movieCardDescription p {
     font-size: 0.9em;
     margin: 10px 0 0;
