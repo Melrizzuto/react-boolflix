@@ -1,6 +1,5 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
 import styles from "./Card.module.css";
-
 const supportedFlags = ["de", "en", "es", "it", "fr"];
 const imgBasePath = import.meta.env.VITE_API_PATH;
 

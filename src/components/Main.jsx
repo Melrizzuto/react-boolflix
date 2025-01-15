@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useGlobalContext } from "../context/GlobalContext";
-import MovieList from './MovieList';
-import SeriesList from './SeriesList';
+import MediaList from './MediaList';
 import styles from './Main.module.css';
 
 function Main() {
@@ -17,7 +16,7 @@ function Main() {
     const [filteredSeries, setFilteredSeries] = useState([]);
 
     useEffect(() => {
-        // filtro i film in base al genere selezionato
+        // Filtro i film in base al genere selezionato
         if (selectedGenre === 'all') {
             setFilteredMovies(movies);
         } else {
@@ -28,7 +27,7 @@ function Main() {
     }, [movies, selectedGenre]);
 
     useEffect(() => {
-        // filtro le serie in base al genere selezionato
+        // Filtro le serie in base al genere selezionato
         if (selectedGenre === 'all') {
             setFilteredSeries(series);
         } else {
@@ -39,26 +38,26 @@ function Main() {
     }, [series, selectedGenre]);
 
     if (isLoading) {
-        // mostro un messaggio di caricamento
-        return <p className={styles.loading}>sto caricando...</p>;
+        // Mostro un messaggio di caricamento
+        return <p className={styles.loading}>Sto caricando...</p>;
     }
 
     if (isSearching && filteredMovies.length === 0 && filteredSeries.length === 0) {
-        // mostro un messaggio quando non ci sono risultati
-        return <p className={styles.noResults}>nessun risultato trovato.</p>;
+        // Mostro un messaggio quando non ci sono risultati
+        return <p className={styles.noResults}>Nessun risultato trovato.</p>;
     }
 
     return (
         <main className={styles.mainContainer}>
             <section className='container-sm'>
                 <h2 className='p-4'>Film</h2>
-                {/* mostro la lista dei film */}
-                <MovieList movies={filteredMovies} />
+                {/* Mostro la lista dei film filtrati */}
+                <MediaList items={filteredMovies} type="movie" />
             </section>
             <section className='container-sm'>
-                <h2 className='p-4'>Serie tv</h2>
-                {/* mostro la lista delle serie */}
-                <SeriesList series={filteredSeries} />
+                <h2 className='p-4'>Serie TV</h2>
+                {/* Mostro la lista delle serie filtrate */}
+                <MediaList items={filteredSeries} type="series" />
             </section>
         </main>
     );
