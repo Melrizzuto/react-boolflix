@@ -1,131 +1,132 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Creazione del contesto globale
+// Creo il contesto globale
 const GlobalContext = createContext();
 
-// Componente Provider per il contesto globale
 function GlobalProvider({ children }) {
-    // Stati per gestire i dati, il caricamento e gli errori
-    const [movies, setMovies] = useState([]); // Stato per memorizzare i film
-    const [series, setSeries] = useState([]); // Stato per memorizzare le serie
-    const [loading, setLoading] = useState(false); // Stato per indicare il caricamento
-    const [error, setError] = useState(null); // Stato per gestire eventuali errori
-
-    // Chiave API memorizzata nell'ambiente di sviluppo
+    // Definisco gli stati per memorizzare film, serie, errori e lo stato di caricamento
+    const [movies, setMovies] = useState([]);
+    const [series, setSeries] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const apiKey = import.meta.env.VITE_API_KEY;
 
-    /**
-     * Funzione per recuperare i contenuti popolari (film e serie)
-     * Effettua due chiamate API consecutive per ottenere i dati dei film e delle serie
-     */
-    const fetchPopularContent = () => {
-        setLoading(true); // Avvia il caricamento
-        setError(null); // Resetta eventuali errori precedenti
+    // Memorizzo i contenuti iniziali per ripristinarli successivamente
+    const [initialMovies, setInitialMovies] = useState([]);
+    const [initialSeries, setInitialSeries] = useState([]);
 
-        // Prima chiamata per ottenere i film popolari
-        axios
-            .get('https://api.themoviedb.org/3/movie/popular', {
-                params: { api_key: apiKey, language: 'it-IT' },
+    // Aggiungo uno stato per tracciare se l'utente ha fatto una ricerca
+    const [hasSearched, setHasSearched] = useState(false);
+
+    // Funzione che carica i contenuti popolari (film e serie)
+    const fetchPopularContent = () => {
+        setLoading(true);
+        setError(null);
+
+        // Carico i film popolari dall'API
+        axios.get('https://api.themoviedb.org/3/movie/popular', {
+            params: { api_key: apiKey, language: 'it-IT' },
+        })
+            .then(response => {
+                const moviesData = response.data.results || [];
+                setMovies(moviesData);
+                setInitialMovies(moviesData); // Salvo i contenuti iniziali dei film
             })
-            .then((response) => {
-                setMovies(response.data.results || []); // Aggiorna lo stato con i film ricevuti
-            })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Errore durante il recupero dei film:', error);
                 setError('Errore durante il recupero dei film.');
-            })
-            .finally(() => {
-                // Seconda chiamata per ottenere le serie popolari
-                axios
-                    .get('https://api.themoviedb.org/3/tv/popular', {
-                        params: { api_key: apiKey, language: 'it-IT' },
-                    })
-                    .then((response) => {
-                        setSeries(response.data.results || []); // Aggiorna lo stato con le serie ricevute
-                    })
-                    .catch((error) => {
-                        console.error('Errore durante il recupero delle serie:', error);
-                        setError('Errore durante il recupero delle serie.');
-                    })
-                    .finally(() => {
-                        setLoading(false); // Conclude il caricamento
-                    });
             });
+
+        // Carico le serie popolari dall'API
+        axios.get('https://api.themoviedb.org/3/tv/popular', {
+            params: { api_key: apiKey, language: 'it-IT' },
+        })
+            .then(response => {
+                const seriesData = response.data.results || [];
+                setSeries(seriesData);
+                setInitialSeries(seriesData); // Salvo i contenuti iniziali delle serie
+            })
+            .catch(error => {
+                console.error('Errore durante il recupero delle serie:', error);
+                setError('Errore durante il recupero delle serie.');
+            })
+            .finally(() => setLoading(false));
     };
 
-    /**
-     * Funzione per cercare contenuti basati su una query
-     * Effettua due chiamate API consecutive per cercare film e serie
-     */
+    // Funzione per ripristinare i contenuti iniziali se la ricerca è vuota
+    const resetContent = () => {
+        setMovies(initialMovies);  // Ripristino i film iniziali
+        setSeries(initialSeries);  // Ripristino le serie iniziali
+    };
+
+    // Funzione per eseguire la ricerca dei contenuti in base alla query dell'utente
     const searchContent = (query) => {
-        setLoading(true); // Avvia il caricamento
-        setError(null); // Resetta eventuali errori precedenti
+        setLoading(true);
+        setError(null);
 
-        // Prima chiamata per cercare i film
-        axios
-            .get('https://api.themoviedb.org/3/search/movie', {
-                params: { api_key: apiKey, query, language: 'it-IT' },
+        // Se la query è vuota, ripristino i contenuti iniziali
+        if (!query.trim()) {
+            resetContent(); // Chiamo la funzione per ripristinare i contenuti
+            setHasSearched(false); // Indico che non è stata fatta una ricerca
+            return;
+        }
+
+        // Eseguo la ricerca dei film in base alla query
+        axios.get('https://api.themoviedb.org/3/search/movie', {
+            params: { api_key: apiKey, query, language: 'it-IT' },
+        })
+            .then(response => {
+                setMovies(response.data.results || []);
             })
-            .then((response) => {
-                const movieResults = response.data.results || [];
-                setMovies(movieResults); // Aggiorna lo stato con i film trovati
-
-                // Seconda chiamata per cercare le serie
-                axios
-                    .get('https://api.themoviedb.org/3/search/tv', {
-                        params: { api_key: apiKey, query, language: 'it-IT' },
-                    })
-                    .then((response) => {
-                        const seriesResults = response.data.results || [];
-                        setSeries(seriesResults); // Aggiorna lo stato con le serie trovate
-
-                        // Controlla se non sono stati trovati risultati
-                        if (movieResults.length === 0 && seriesResults.length === 0) {
-                            setError('Nessun risultato trovato.');
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Errore durante la ricerca delle serie:', error);
-                        setError('Errore durante la ricerca delle serie.');
-                    })
-                    .finally(() => {
-                        setLoading(false); // Conclude il caricamento
-                    });
-            })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Errore durante la ricerca dei film:', error);
                 setError('Errore durante la ricerca dei film.');
-                setLoading(false); // Conclude il caricamento in caso di errore
+            });
+
+        // Eseguo la ricerca delle serie in base alla query
+        axios.get('https://api.themoviedb.org/3/search/tv', {
+            params: { api_key: apiKey, query, language: 'it-IT' },
+        })
+            .then(response => {
+                setSeries(response.data.results || []);
+            })
+            .catch(error => {
+                console.error('Errore durante la ricerca delle serie:', error);
+                setError('Errore durante la ricerca delle serie.');
+            })
+            .finally(() => {
+                setLoading(false);
+                setHasSearched(true); // Indico che la ricerca è stata effettuata
             });
     };
 
-    // Effettua una chiamata iniziale per ottenere i contenuti popolari al primo rendering
+    // Uso useEffect per caricare i contenuti popolari al primo caricamento
     useEffect(() => {
         fetchPopularContent();
     }, []);
 
-    // Fornisce il contesto globale ai componenti figli
+    // Fornisco il contesto con tutte le funzioni e gli stati necessari
     return (
-        <GlobalContext.Provider
-            value={{
-                movies,
-                series,
-                loading,
-                error,
-                fetchPopularContent,
-                searchContent,
-            }}
-        >
+        <GlobalContext.Provider value={{
+            movies,
+            series,
+            loading,
+            error,
+            fetchPopularContent,
+            searchContent,
+            hasSearched, // Aggiungo l'informazione sulla ricerca
+            resetContent // Fornisco la funzione per resettare i contenuti
+        }}>
             {children}
         </GlobalContext.Provider>
     );
 }
 
-// Hook per accedere facilmente al contesto globale (custom)
 function useGlobalContext() {
+    // Restituisco il contesto per permettere l'accesso in altre parti dell'app
     return useContext(GlobalContext);
 }
 
-// Esporta il Provider e l'hook per l'utilizzo nei componenti
 export { GlobalProvider, useGlobalContext };
+

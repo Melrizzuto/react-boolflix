@@ -19,7 +19,7 @@ function Card({ item }) {
     // percorso dell'immagine del poster
     const posterSrc = item.poster_path
         ? `${imgBasePath}${item.poster_path}`
-        : "/img/placeholders/poster-placeholder.jpg";
+        : "/img/placeholder.jpg";
 
     // percorso della bandiera
     const flagPath = supportedFlags.includes(item.original_language)
@@ -30,7 +30,7 @@ function Card({ item }) {
         <div className={styles.card}>
             {/* Immagine del poster */}
             <img
-                src={posterSrc}
+                src={posterSrc || "immagine non disponibile"}
                 alt={item.title || item.name || "Poster non disponibile"}
                 className={styles.cardImage}
             />

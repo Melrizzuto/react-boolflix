@@ -1,13 +1,12 @@
-
-import { useGlobalContext } from '../context/GlobalContext';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useGlobalContext } from '../context/GlobalContext';
 import Card from './Card';
 import styles from './MediaList.module.css';
 
 function MediaList() {
-    const { movies, series, loading, error } = useGlobalContext();
+    const { movies, series, loading, error } = useGlobalContext(); // Accesso ai dati dal contesto globale
 
     // Configurazione del carosello
     const carouselSettings = {
@@ -52,20 +51,35 @@ function MediaList() {
 
     return (
         <div className={styles.container}>
-            {/* Sezione Popolari che include sia film che serie TV */}
-            <div className={styles.popularSection}>
-                <h2>Popolari</h2>
-                <Slider {...carouselSettings}>
-                    {/* Mostra film e serie TV insieme nel carosello */}
-                    {[...movies, ...series].map((item) => (
-                        <div key={item.id}>
-                            <Card item={item} />
-                        </div>
-                    ))}
-                </Slider>
-            </div>
+            {/* Sezione Film Popolari */}
+            {movies.length > 0 && (
+                <div className={styles.popularSection}>
+                    <h2>Film Popolari</h2>
+                    <Slider {...carouselSettings}>
+                        {movies.map((movie) => (
+                            <div key={movie.id}>
+                                <Card item={movie} />
+                            </div>
+                        ))}
+                    </Slider>
+                </div>
+            )}
 
-            {/* Sezione Film (solo film) */}
+            {/* Sezione Serie TV Popolari */}
+            {series.length > 0 && (
+                <div className={styles.popularSection}>
+                    <h2>Serie TV Popolari</h2>
+                    <Slider {...carouselSettings}>
+                        {series.map((serie) => (
+                            <div key={serie.id}>
+                                <Card item={serie} />
+                            </div>
+                        ))}
+                    </Slider>
+                </div>
+            )}
+
+            {/* Sezione Griglia per Film */}
             {movies.length > 0 && (
                 <div className={styles.gridSection}>
                     <h2>Film</h2>
@@ -77,7 +91,7 @@ function MediaList() {
                 </div>
             )}
 
-            {/* Sezione Serie TV (solo serie TV) */}
+            {/* Sezione Griglia per Serie TV */}
             {series.length > 0 && (
                 <div className={styles.gridSection}>
                     <h2>Serie TV</h2>
@@ -85,6 +99,26 @@ function MediaList() {
                         {series.map((serie) => (
                             <Card key={serie.id} item={serie} />
                         ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Controllo per visualizzare più film o serie TV */}
+            {(movies.length > 0 || series.length > 0) && (
+                <div className={styles.additionalSection}>
+                    <h2>Altri Film e Serie TV</h2>
+                    <div className={styles.grid}>
+                        {/* Se ci sono nuovi film */}
+                        {movies.length > 0 &&
+                            movies.slice(5).map((movie) => (
+                                <Card key={movie.id} item={movie} />
+                            ))}
+
+                        {/* Se ci sono nuove serie TV */}
+                        {series.length > 0 &&
+                            series.slice(5).map((serie) => (
+                                <Card key={serie.id} item={serie} />
+                            ))}
                     </div>
                 </div>
             )}

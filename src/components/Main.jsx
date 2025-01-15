@@ -25,7 +25,7 @@ function Main() {
             {/* Sezione per i film popolari */}
             <section className='container-sm p-3'>
                 {/* Mostro la lista dei film */}
-                <MediaList items={movies} type="movie" />
+                <MediaList />
             </section>
         </main>
     );
