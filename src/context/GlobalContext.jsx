@@ -124,8 +124,9 @@ function GlobalProvider({ children }) {
 }
 
 function useGlobalContext() {
+    const useGlobalContext = (useContext)
     // Restituisco il contesto per permettere l'accesso in altre parti dell'app
-    return useContext(GlobalContext);
+    return useGlobalContext(GlobalContext);
 }
 
 export { GlobalProvider, useGlobalContext };

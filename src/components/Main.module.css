@@ -27,25 +27,3 @@
     display: inline-block;
     text-align: left;
 }
-
-/* Personalizzazione per il carosello dei film */
-.carousel-inner {
-    overflow: hidden;
-}
-
-.carousel-item {
-    padding: 40px 0;
-}
-
-/* Immagini dei film */
-.carousel-item img {
-    width: 300px;
-    height: 450px;
-    object-fit: cover;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-}
-
-.carousel-item img:hover {
-    transform: scale(1.05);
-}

@@ -22,11 +22,6 @@
     justify-content: center;
 }
 
-.slick-dots {
-    bottom: 10px;
-    /* Sposta i punti in basso */
-}
-
 .slick-prev,
 .slick-next {
     z-index: 1;
@@ -101,7 +96,6 @@ h4 {
     transform: translateY(-50%);
     transition: transform 0.3s ease;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Sfondo semitrasparente */
     border-radius: 50%;
     padding: 10px;
 }
@@ -109,52 +103,16 @@ h4 {
 /* Freccia Next */
 .slick-next {
     right: 10px;
-    /* Posizione della freccia destra */
 }
 
 /* Freccia Prev */
 .slick-prev {
     left: 10px;
-    /* Posizione della freccia sinistra */
 }
 
 /* Aggiungi una leggera animazione per le frecce */
 .slick-prev:hover,
 .slick-next:hover {
     transform: scale(1.2);
-    /* Frecce più grandi al passaggio del mouse */
     background-color: rgba(0, 0, 0, 0.8);
-    /* Colore più scuro quando hover */
-}
-
-/* Personalizzazione dei punti di navigazione (dots) */
-.slick-dots.custom-dots li button:before {
-    color: #fff;
-    /* Cambia il colore del pallino a bianco */
-    opacity: 0.8;
-    /* Aumenta l'opacità per renderlo più visibile */
-    font-size: 18px;
-    /* Mantieni una buona dimensione per i punti */
-    transition: opacity 0.3s ease, font-size 0.3s ease;
-    /* Animazione dolce */
-}
-
-/* Pallino attivo (quello selezionato) */
-.slick-dots.custom-dots li.slick-active button:before {
-    opacity: 1;
-    /* Pallino attivo completamente visibile */
-    font-size: 20px;
-    /* Pallino attivo leggermente più grande */
-    color: #f00;
-    /* Cambia il colore del pallino attivo (rosso in questo caso) */
-}
-
-/* Personalizza l'aspetto del carosello per migliorare la visibilità dei pallini */
-.slick-dots.custom-dots {
-    bottom: -30px;
-    padding: 0;
-}
-
-.slick-dots.custom-dots li {
-    margin: 0 8px;
 }
