@@ -106,7 +106,7 @@ function MediaList() {
             {/* Controllo per visualizzare più film o serie TV */}
             {(movies.length > 0 || series.length > 0) && (
                 <div className={styles.additionalSection}>
-                    <h2>Altri Film e Serie TV</h2>
+                    <h4>Altri Film e Serie TV</h4>
                     <div className={styles.grid}>
                         {/* Se ci sono nuovi film */}
                         {movies.length > 0 &&
