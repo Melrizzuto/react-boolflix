@@ -7,58 +7,98 @@ function GlobalProvider({ children }) {
     const [movies, setMovies] = useState([]);
     const [series, setSeries] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [isSearching, setIsSearching] = useState(false);
-    const [selectedGenre, setSelectedGenre] = useState('all');
     const [error, setError] = useState(null);
 
-    const fetchMoviesAndSeries = () => {
-        const apiKey = import.meta.env.VITE_API_KEY; // Prendo la chiave API dal file .env
-        setLoading(true); // Imposto lo stato di caricamento su true
-        setError(null); // Reset errore precedente
+    const apiKey = import.meta.env.VITE_API_KEY;
 
-        const moviesPromise = axios.get('https://api.themoviedb.org/3/movie/popular', {
-            params: { api_key: apiKey, language: 'it-IT' },
-        });
+    // Funzione per recuperare film e serie popolari
+    const fetchPopularContent = () => {
+        setLoading(true);
+        setError(null);
 
-        const seriesPromise = axios.get('https://api.themoviedb.org/3/tv/popular', {
-            params: { api_key: apiKey, language: 'it-IT' },
-        });
-
-        Promise.all([moviesPromise, seriesPromise])
-            .then(([moviesResponse, seriesResponse]) => {
-                setMovies(moviesResponse.data.results || []);
-                setSeries(seriesResponse.data.results || []);
+        axios
+            .get('https://api.themoviedb.org/3/movie/popular', {
+                params: { api_key: apiKey, language: 'it-IT' },
+            })
+            .then((response) => {
+                setMovies(response.data.results || []);
             })
             .catch((error) => {
-                console.error('Errore durante il recupero dei dati:', error);
-                setError('Impossibile recuperare i dati. Riprova più tardi.');
+                console.error('Errore durante il recupero dei film:', error);
+                setError('Errore durante il recupero dei film.');
             })
             .finally(() => {
-                setLoading(false); // Alla fine, metto il caricamento su false
+                axios
+                    .get('https://api.themoviedb.org/3/tv/popular', {
+                        params: { api_key: apiKey, language: 'it-IT' },
+                    })
+                    .then((response) => {
+                        setSeries(response.data.results || []);
+                    })
+                    .catch((error) => {
+                        console.error('Errore durante il recupero delle serie:', error);
+                        setError('Errore durante il recupero delle serie.');
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    });
             });
     };
 
-    // Chiamata iniziale per recuperare i dati
+    // Funzione per la ricerca di film e serie
+    const searchContent = (query) => {
+        setLoading(true);
+        setError(null);
+
+        axios
+            .get('https://api.themoviedb.org/3/search/movie', {
+                params: { api_key: apiKey, query, language: 'it-IT' },
+            })
+            .then((response) => {
+                const movieResults = response.data.results || [];
+                setMovies(movieResults);
+
+                axios
+                    .get('https://api.themoviedb.org/3/search/tv', {
+                        params: { api_key: apiKey, query, language: 'it-IT' },
+                    })
+                    .then((response) => {
+                        const seriesResults = response.data.results || [];
+                        setSeries(seriesResults);
+
+                        if (movieResults.length === 0 && seriesResults.length === 0) {
+                            setError('Nessun risultato trovato.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Errore durante la ricerca delle serie:', error);
+                        setError('Errore durante la ricerca delle serie.');
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    });
+            })
+            .catch((error) => {
+                console.error('Errore durante la ricerca dei film:', error);
+                setError('Errore durante la ricerca dei film.');
+                setLoading(false); // Fermare il caricamento in caso di errore immediato
+            });
+    };
+
+    // Chiamata iniziale per contenuti popolari
     useEffect(() => {
-        fetchMoviesAndSeries();
+        fetchPopularContent();
     }, []);
 
     return (
         <GlobalContext.Provider
             value={{
                 movies,
-                setMovies,
                 series,
-                setSeries,
                 loading,
-                setLoading,
-                isSearching,
-                setIsSearching,
-                selectedGenre,
-                setSelectedGenre,
                 error,
-                setError,
-                fetchMoviesAndSeries,
+                fetchPopularContent,
+                searchContent,
             }}
         >
             {children}
