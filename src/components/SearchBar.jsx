@@ -6,7 +6,7 @@ import styles from './SearchBar.module.css';
 function SearchBar() {
     const [searchValue, setSearchValue] = useState('');
     const [searchType, setSearchType] = useState('movie');
-    const [searched, setSearched] = useState(false); // stato per tracciare se la ricerca è stata eseguita
+    const [searched, setSearched] = useState(false);
     const { setMovies, setSeries, setLoading, setError, loading, error } = useGlobalContext();
 
     // funzione per gestire la ricerca
