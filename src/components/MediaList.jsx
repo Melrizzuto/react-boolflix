@@ -10,30 +10,37 @@ function MediaList() {
 
     // Configurazione del carosello
     const carouselSettings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        slidesToShow: 4,
-        slidesToScroll: 2,
+        dots: false, // Mantieni i punti di navigazione sotto il carosello
+        infinite: true, // Permette l'infinito loop del carosello
+        speed: 700, // Velocità di transizione tra gli elementi
+        autoplay: true, // Attiva il carosello automatico
+        autoplaySpeed: 2000, // Velocità dell'autoplay
+        slidesToShow: 4, // Quante immagini mostriamo per volta
+        slidesToScroll: 2, // Quante immagini scorriamo per volta
+        centerMode: true, // Carosello centrato per un effetto più dinamico
+        centerPadding: '0', // Elimina il padding ai lati
+        nextArrow: <div className={styles.nextArrow}>{"➜"}</div>, // Freccia personalizzata
+        prevArrow: <div className={styles.prevArrow}>{"➜"}</div>, // Freccia personalizzata
         responsive: [
             {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
+                    slidesToScroll: 1, // Scorrere solo 1 elemento su tablet
                 },
             },
             {
                 breakpoint: 768,
                 settings: {
                     slidesToShow: 2,
+                    slidesToScroll: 1, // Scorrere solo 1 elemento su dispositivi mobili
                 },
             },
             {
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 1,
+                    slidesToScroll: 1,
                 },
             },
         ],
