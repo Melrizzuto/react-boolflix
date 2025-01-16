@@ -101,14 +101,14 @@ h4 {
 }
 
 .jumbotron {
+    width: 100%;
     position: relative;
-    height: 600px;
+    height: 550px;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    /* padding: 0 20px; */
     overflow: hidden;
     background-color: #000;
     margin-bottom: 30px;
@@ -173,19 +173,16 @@ h1 {
     font-weight: bold;
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    /* Aggiunge un'ombra per maggiore leggibilità */
 }
 
 p {
     font-size: 1.2rem;
     margin-bottom: 20px;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    /* Ombra leggera */
 }
 
 .watchButton {
     background-color: #e50914;
-    /* Colore del pulsante Netflix */
     color: white;
     border: none;
     padding: 12px 36px;
@@ -197,7 +194,6 @@ p {
 
 .watchButton:hover {
     background-color: #b20710;
-    /* Colore al passaggio del mouse */
 }
 
 /* media queries */
