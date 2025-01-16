@@ -6,7 +6,7 @@ import Card from './Card';
 import styles from './MediaList.module.css';
 
 function MediaList() {
-    const { movies, series, loading, error } = useGlobalContext();
+    const { movies, series, loading, error, hasSearched } = useGlobalContext();
 
     const carouselSettings = {
         dots: false,
@@ -58,21 +58,23 @@ function MediaList() {
     return (
         <div className={styles.container}>
             {/* Jumbotron con Video di Sfondo */}
-            <div className={styles.jumbotron}>
-                <div className={styles.videoContainer}>
-                    <video className={styles.backgroundVideo} autoPlay loop muted>
-                        <source src="/video/4231453-hd_1920_1080_25fps.mp4" type="video/mp4" />
-                        Il tuo browser non supporta il video.
-                    </video>
-                </div>
-                <div className={styles.overlay}>
-                    <div className={styles.textContent}>
-                        <h1>Benvenuto nella tua esperienza di streaming</h1>
-                        <p>Guarda film e serie TV senza interruzioni. Inizia ora!</p>
-                        <button className={styles.watchButton}>Inizia a guardare</button>
+            {!hasSearched && (
+                <div className={styles.jumbotron}>
+                    <div className={styles.videoContainer}>
+                        <video className={styles.backgroundVideo} autoPlay loop muted>
+                            <source src="/video/4231453-hd_1920_1080_25fps.mp4" type="video/mp4" />
+                            Il tuo browser non supporta il video.
+                        </video>
+                    </div>
+                    <div className={styles.overlay}>
+                        <div className={styles.textContent}>
+                            <h1>Benvenuto nella tua esperienza di streaming</h1>
+                            <p>Guarda film e serie TV senza interruzioni. Inizia ora!</p>
+                            <button className={styles.watchButton}>Inizia a guardare</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             {/* Sezione Film Popolari */}
             {movies.length > 0 && (
