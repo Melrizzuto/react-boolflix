@@ -61,10 +61,10 @@ function SearchBar() {
                     onKeyUp={handleKeyUp}
                     className={styles.searchInput}
                 />
-                <button onClick={handleSearch} className={styles.searchButton}>
-                    Cerca
-                </button>
             </div>
+            <button onClick={handleSearch} className={`ms-auto ${styles.searchButton}`}>
+                Cerca
+            </button>
         </div>
     );
 }
