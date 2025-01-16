@@ -25,14 +25,15 @@ function MediaList() {
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 2,
                     slidesToScroll: 1, // Scorrere solo 1 elemento su tablet
+                    centerPadding: 20// Elimina il padding ai lati
                 },
             },
             {
                 breakpoint: 768,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 1,
                     slidesToScroll: 1, // Scorrere solo 1 elemento su dispositivi mobili
                 },
             },
