@@ -26,7 +26,7 @@ function Header() {
         >
             <div className={styles.containerFluid}>
                 <a href="/" className={styles.navbarBrand}>
-                    <h1>Boolfix</h1>
+                    <h1>Boolflix </h1>
                 </a>
                 <SearchBar />
             </div>
